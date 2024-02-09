@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="wrapper">
+
+   
+    <form method="POST" class="form" >
+      <h1 class="title">Registrarse</h1>
+      <br>
+      {% if error %}
+      <p class="error-message">{{ error }}</p>
+      {% endif %}
+      {% csrf_token %}
+      <div class="inp">
+        <input class="input" type="text" name="username" id="username" placeholder="Ingrese su usuario">
+        <i style="font-size: 20px;" class="bi bi-person-fill"></i>
+      </div>
+      <div class="inp">
+        <input class="input" type="password" name="password1" id="password1" placeholder="Ingrese su Contraseña">
+        <i style="font-size: 20px;" class="bi bi-key-fill"></i>
+      </div>
+      <div class="inp">
+        <input class="input" type="password" name="password2" id="password2" placeholder="Confirme su Contraseña">
+        <i style="font-size: 20px;" class="bi bi-shield-lock-fill"></i>
+      </div>
+
+      <button type="submit" class="submit">Registrarse</button>
+    </form>
+    <div class="banner">
+      <h1 class="wel_text">Bienvenido</h1>
+      <p class="para">Por Favor Registrese</p>
+      <a href="{% url 'iniciarSesion' %}" class="link">Regresar al Login</b></a>
+    </div>
+  </div>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      font-family: arial;
+      color: #f9ae65;
+    }
+    body{
+      width: 100vw;
+      height: 100vh;
+      background:#e0e2e4;
+      display: grid;
+      justify-content: center;
+      align-content: center;
+    }
+    ::-webkit-input-placeholder{
+      color:  #3c6d79;
+    }
+    .wrapper{
+      position: relative;
+      width: 800px;
+      height: 65vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 3px solid #f9ae65;
+     
+    }
+    .form{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .title{
+      font-size: 35px;
+    }
+    .inp{
+      padding-bottom: 10px;
+      border-bottom: 2px solid #3c6d79;
+    }
+    .input{
+      border: none;
+      outline: none;
+      background: none;
+      width: 260px;
+      margin-top: 40px;
+      padding-right: 10px;
+      font-size: 17px;
+      color: #3c6d79;
+    }
+    .input:focus {
+      outline: none;
+      border: none;
+    }
+
+    .submit{
+      border: none;
+      outline: none;
+      width: 288px;
+      margin-top: 25px;
+      padding: 10px 0;
+      font-size: 20px;
+      border-radius: 40px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      background: rgb(60, 109, 121);
+    }
+    .banner{
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 450px;
+      height: 100%;
+      background: rgb(60, 109, 121);
+    background: radial-gradient(circle, rgba(60, 109, 121, 1) 17%, rgba(60, 109, 121, 1) 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 60% 100%);
+      padding-right: 70px;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .wel_text{
+      font-size: 40px;
+      margin-top: -50px;
+      line-height: 50px;
+    }
+    .para{
+      margin-top: 10px;
+      font-size: 18px;
+      line-height: 24px;
+      letter-spacing: 1px;
+    }
+    .link{
+      color:  #ffff; 
+      text-decoration: none;
+      transition: color 0.3s ease; 
+    }
+    .link:hover{
+      color: #000000;
+      background-color: transparent;
+    }
+    
+  
+  </style>
+  
+{% endblock %}
