@@ -75,7 +75,6 @@ export const ProductoForm = () => {
               type="text"
               className="form-control"
               placeholder="Producto"
-              maxLength={30}
               {...register("nombre_producto", { required: true })}
             />
             {errors.nombre_producto && <span>Este campo es requerido</span>}

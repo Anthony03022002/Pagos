@@ -211,8 +211,6 @@ export const ClienteAtuntaquiForm = () => {
             className="form-control"
             type="number"
             {...register("total_pagar", { required: true })}
-            readOnly
-            value={cantidad * precioSeleccionado || ""}
           />
         </div>
         <div className="col-md-6">
