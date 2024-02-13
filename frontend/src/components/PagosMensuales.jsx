@@ -18,6 +18,7 @@ export const PagosMensuales = () => {
       state: {
         idCliente: cliente.id,
         cedula: cliente.cedula,
+        nombre: cliente.nombre_completo,
         pagosMensuales: cliente.pagos_mensuales,
         debe: debe,
       },

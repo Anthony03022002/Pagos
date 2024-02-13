@@ -6,7 +6,7 @@ export const ClientesAngelList = () => {
   const [clientes, setClientes] = useState([]);
   const [filtroNombre, setFiltroNombre] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [elementsPerPage] = useState(5);
+  const [elementsPerPage] = useState(10);
   const navigate = useNavigate();
 
   useEffect(() => {

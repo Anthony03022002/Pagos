@@ -7,7 +7,7 @@ export const GenerarPagoAngel = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
-  const { idCliente, pagosMensuales, debe, cedula } = location.state || {};
+  const { idCliente, pagosMensuales, debe, cedula, nombre } = location.state || {};
 
   const onSubmit = handleSubmit(async (data) => {
     await createPagos({ ...data, id: idCliente,  });
@@ -17,13 +17,13 @@ export const GenerarPagoAngel = () => {
     // Encabezado
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(18);
-    pdf.text("Comprobante de Pago de C&M Sports", 20, 20);
+    pdf.text("Comprobante de Pago de C&M Sports", 50, 20);
 
     // Contenido principal
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(12);
     pdf.text(
-      ` El cliente ${cedula} realizo el pago por el valor de: $${data.cantidad_pagada}`,
+      ` El cliente ${nombre} con número de cedula ${cedula} realizo el pago por el valor de: $${data.cantidad_pagada}`,
       20,
       40
     );
@@ -37,7 +37,7 @@ export const GenerarPagoAngel = () => {
 
 
     // Guardar el PDF
-    pdf.save("Comprobante_de_pago.pdf");
+    pdf.save(`Comprobante_de_pago_${nombre}.pdf`);
 
     // Redirigir a la página de pagos mensuales
     navigate(`/clientesAngel/${idCliente}/pagosMensualesAngel`);
