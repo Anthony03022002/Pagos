@@ -6,10 +6,10 @@ const productosApi = axios.create({
 
 export const getAllProductos = () => productosApi.get('/')
 
-export const getAllProducto = (nombre_producto) => productosApi.get(`/${nombre_producto}/`)
+export const getAllProducto = (id) => productosApi.get(`/${id}/`)
 
 export const createProductos = (productos) => productosApi.post('/', productos);
 
-export const deleteProductos = (nombre_producto) => productosApi.delete(`/${nombre_producto}`);
+export const deleteProductos = (id) => productosApi.delete(`/${id}`);
 
-export const updateProductos = (nombre_producto, productos) => productosApi.put(`/${nombre_producto}/`, productos)
+export const updateProductos = (id, productos) => productosApi.put(`/${id}/`, productos)

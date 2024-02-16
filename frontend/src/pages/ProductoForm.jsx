@@ -23,8 +23,8 @@ export const ProductoForm = () => {
   const params = useParams();
 
   const onSubmit = handleSubmit(async (data) => {
-    if (params.nombre_producto) {
-      await updateProductos(params.nombre_producto, data);
+    if (params.id) {
+      await updateProductos(params.id, data);
       toast.success("Actualizado correctamente", {
         position: "top-center",
         style: {
@@ -49,8 +49,8 @@ export const ProductoForm = () => {
 
   useEffect(() => {
     async function loadProducto() {
-      if (params.nombre_producto) {
-        const { data } = await getAllProducto(params.nombre_producto);
+      if (params.id) {
+        const { data } = await getAllProducto(params.id);
         setValue("nombre_producto", data.nombre_producto);
         setValue("precio", data.precio);
       }
@@ -103,14 +103,14 @@ export const ProductoForm = () => {
           Guardar Producto
         </button>
       </form>
-      {params.nombre_producto && (
+      {params.id && (
         <button
           className="btn btn-danger"
           style={{ position: "absolute", right: "180px", top: "300px" }}
           onClick={async () => {
             const aceptar = window.confirm("Seguro de eliminar el producto");
             if (aceptar) {
-              await deleteProductos(params.nombre_producto);
+              await deleteProductos(params.id);
               toast.success("Eliminado Correctamente", {
                 position: "top-center",
                 style: {

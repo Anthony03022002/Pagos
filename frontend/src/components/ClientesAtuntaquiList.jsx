@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllClientes } from "../api/clientesAtuntaqui.api";
+import { getAllProductos } from "../api/productos.api";
 import { Link, useNavigate } from "react-router-dom";
 
 export const ClientesAtuntaquiList = () => {
@@ -7,6 +8,8 @@ export const ClientesAtuntaquiList = () => {
   const [filtroNombre, setFiltroNombre] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [elementsPerPage] = useState(10);
+  const [productos, setProductos] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +22,18 @@ export const ClientesAtuntaquiList = () => {
       }
     };
     cargarClientes();
+  }, []);
+  useEffect(() => {
+    async function loadProductos() {
+      try {
+        const res = await getAllProductos();
+        setProductos(res.data);
+      } catch (error) {
+        console.error("Error al cargar productos:", error);
+      }
+    }
+
+    loadProductos();
   }, []);
 
   const indexOfLastElement = currentPage * elementsPerPage;
@@ -95,7 +110,7 @@ export const ClientesAtuntaquiList = () => {
               <td>{cliente.cedula}</td>
               <td>{cliente.nombre_completo}</td>
               <td>{cliente.meses_diferidos}</td>
-              <td>{cliente.nombre_producto}</td>
+              <td>{productos.find(producto => producto.id === cliente.nombre_producto)?.nombre_producto || ''}</td>
               <td>{cliente.cantidad_producto}</td>
               <td>{cliente.total_pagar}</td>
               <td>{cliente.pagos_mensuales}</td>

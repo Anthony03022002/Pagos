@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCliente } from "../api/clientesCayambe.api";
 import { getAllPagos } from "../api/generarPagoCayambe.api";
+import { getAllProductos } from "../api/productos.api";
+
 
 export const PagosMensualesCayambe = () => {
   const { id } = useParams();
@@ -12,6 +14,8 @@ export const PagosMensualesCayambe = () => {
   const [pagos, setPagos] = useState([]);
   const [totalPagado, setTotalPagado] = useState(0); 
   const [debe, setDebe] = useState(0);
+  const [productos, setProductos] = useState([]);
+
 
   const handleGenerarPagoClick = () => {
     navigate(`/clientesCayambe/${id}/generarPagoCayambe`, {
@@ -60,6 +64,18 @@ export const PagosMensualesCayambe = () => {
 
     fetchCliente();
   }, [id]);
+  useEffect(() => {
+    async function loadProductos() {
+      try {
+        const res = await getAllProductos();
+        setProductos(res.data);
+      } catch (error) {
+        console.error("Error al cargar productos:", error);
+      }
+    }
+
+    loadProductos();
+  }, []);
 
   if (error) {
     return <div className="alert alert-danger">Error: {error}</div>;
@@ -78,7 +94,7 @@ export const PagosMensualesCayambe = () => {
         Cliente: {cliente.nombre_completo}
       </h2>
       <p style={{ textTransform: "uppercase" }}>
-        Producto: {cliente.nombre_producto}
+      Producto: {productos.find(producto => producto.id === cliente.nombre_producto)?.nombre_producto || ''}
       </p>
       <p>Debe: ${debe}</p>
       <p>Pagado: ${totalPagado}</p>

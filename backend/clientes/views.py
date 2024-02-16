@@ -9,4 +9,5 @@ class clientesView(viewsets.ModelViewSet):
     queryset = Clientes.objects.all()
 
 
+
     

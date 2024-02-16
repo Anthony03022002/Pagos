@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAllClientes } from "../api/clientesCayambe.api";
 import { Link, useNavigate } from "react-router-dom";
+import { getAllProductos } from "../api/productos.api";
+
 
 export const ClientesCayambeList = () => {
   const [clientes, setClientes] = useState([]);
@@ -8,6 +10,8 @@ export const ClientesCayambeList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [elementsPerPage] = useState(10);
   const navigate = useNavigate();
+  const [productos, setProductos] = useState([]);
+
 
   useEffect(() => {
     const cargarClientes = async () => {
@@ -20,6 +24,19 @@ export const ClientesCayambeList = () => {
     };
     cargarClientes();
   }, []);
+  useEffect(() => {
+    async function loadProductos() {
+      try {
+        const res = await getAllProductos();
+        setProductos(res.data);
+      } catch (error) {
+        console.error("Error al cargar productos:", error);
+      }
+    }
+
+    loadProductos();
+  }, []);
+
 
   const indexOfLastElement = currentPage * elementsPerPage;
   const indexOfFirstElement = indexOfLastElement - elementsPerPage;
@@ -95,7 +112,7 @@ export const ClientesCayambeList = () => {
               <td>{cliente.cedula}</td>
               <td>{cliente.nombre_completo}</td>
               <td>{cliente.meses_diferidos}</td>
-              <td>{cliente.nombre_producto}</td>
+              <td>{productos.find(producto => producto.id === cliente.nombre_producto)?.nombre_producto || ''}</td>
               <td>{cliente.cantidad_producto}</td>
               <td>{cliente.total_pagar}</td>
               <td>{cliente.pagos_mensuales}</td>
@@ -108,7 +125,7 @@ export const ClientesCayambeList = () => {
                 </button>
                 <button
                   className="btn" role="button" style={linkStyle}
-                  onClick={() => navigate(`/clientesCayambe/${cliente.id}`)} >
+                  onClick={() => navigate(`/clienteCayambe/${cliente.id}`)} >
                   <i className="bi bi-pencil" style={{ color: '#f9ae65' }}></i>
                 </button>
               </td>

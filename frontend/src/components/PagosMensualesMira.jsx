@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCliente } from "../api/clientesMira.api";
+import { getAllProductos } from "../api/productos.api";
+
 import { getAllPagos } from "../api/generarPagoMira.api";
 
 export const PagosMensualesMira = () => {
@@ -12,6 +14,7 @@ export const PagosMensualesMira = () => {
   const [pagos, setPagos] = useState([]);
   const [totalPagado, setTotalPagado] = useState(0); 
   const [debe, setDebe] = useState(0);
+  const [productos, setProductos] = useState([]);
 
   const handleGenerarPagoClick = () => {
     navigate(`/clientesMira/${id}/generarPagoMira`, {
@@ -24,6 +27,18 @@ export const PagosMensualesMira = () => {
       },
     });
   };
+  useEffect(() => {
+    async function loadProductos() {
+      try {
+        const res = await getAllProductos();
+        setProductos(res.data);
+      } catch (error) {
+        console.error("Error al cargar productos:", error);
+      }
+    }
+
+    loadProductos();
+  }, []);
   
   useEffect(() => {
     async function loadPagos() {
@@ -78,7 +93,7 @@ export const PagosMensualesMira = () => {
         Cliente: {cliente.nombre_completo}
       </h2>
       <p style={{ textTransform: "uppercase" }}>
-        Producto: {cliente.nombre_producto}
+      Producto: {productos.find(producto => producto.id === cliente.nombre_producto)?.nombre_producto || ''}
       </p>
       <p>Debe: ${debe}</p>
       <p>Pagado: ${totalPagado}</p>

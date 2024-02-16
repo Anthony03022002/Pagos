@@ -18,7 +18,6 @@ export const ClienteOtavaloForm = () => {
     handleSubmit,
     formState: { errors },
     setValue,
-    control,
   } = useForm();
 
   const [productos, setProductos] = useState([]);
@@ -83,10 +82,20 @@ export const ClienteOtavaloForm = () => {
         setValue("meses_diferidos", data.meses_diferidos);
         setPagosMensuales(data.pagos_mensuales);
         setCantidad(data.cantidad_producto);
+        const producto = productos.find(
+          (p) => p.id === parseInt(data.nombre_producto)
+        );
+        if (producto) {
+          setPrecioSeleccionado(producto.precio);
+          setCantidad(data.cantidad_producto || 0);
+        } else {
+          setPrecioSeleccionado(null);
+          setCantidad(0);
+        }
       }
     }
     loadCliente();
-  }, [params.id, setValue]);
+  }, [params.id, setValue, productos]);
 
   useEffect(() => {
     async function loadProductos() {
@@ -107,13 +116,18 @@ export const ClienteOtavaloForm = () => {
   const handleProductoChange = (event) => {
     const productoSeleccionado = event.target.value;
     const producto = productos.find(
-      (p) => p.nombre_producto === productoSeleccionado
+      (p) => p.id === parseInt(productoSeleccionado)
     );
-
-    setPrecioSeleccionado(producto ? producto.precio : null);
-    // Actualizar la cantidad a 1 cuando se cambia el producto
-    setCantidad(1);
-    setValue("total_pagar", producto ? producto.precio : null);
+  
+    if (producto) {
+      setPrecioSeleccionado(producto.precio);
+      setCantidad(1);
+      setValue("total_pagar", producto.precio);
+    } else {
+      setPrecioSeleccionado(null);
+      setCantidad(0);
+      setValue("total_pagar", null);
+    }
   };
   const handleCantidadChange = (event) => {
     const nuevaCantidad = parseInt(event.target.value, 10);
@@ -158,7 +172,6 @@ export const ClienteOtavaloForm = () => {
           <input
             className="form-control"
             type="number"
-            {...register("total_pagar", { required: true })}
             readOnly
             value={precioSeleccionado || ""}
           />
@@ -183,7 +196,7 @@ export const ClienteOtavaloForm = () => {
             value={mesesDiferidos}
             onChange={handleMesesDiferidosChange} // Agregar evento onChange
           >
-            {[4, 8, 12, 16, 20, 24, 32].map((meses) => (
+            {[4, 8, 12].map((meses) => (
               <option key={meses} value={meses}>
                 {`${meses} semanas`}
               </option>
@@ -246,8 +259,8 @@ export const ClienteOtavaloForm = () => {
             <option value="">Seleccione un producto</option>
             {productos.map((producto) => (
               <option
-                key={producto.nombre_producto}
-                value={producto.nombre_producto}
+                key={producto.id}
+                value={producto.id}
               >
                 {producto.nombre_producto}
               </option>

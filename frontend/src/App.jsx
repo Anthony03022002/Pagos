@@ -90,7 +90,7 @@ const App = () => {
         <Route path="/crear-clientePimampiro" element={<ClientePimampiroForm />}/>
         --------------------------------Clientes id---------------------------
         <Route path="/clientes/:id" element={<ClientesForm />} />
-        <Route path="/productos/:nombre_producto" element={<ProductoForm />} />
+        <Route path="/productos/:id" element={<ProductoForm />} />
         <Route path="/clientesAngel/:id" element={<ClienteAngelForm />} />
         <Route path="/clientesAtuntaqui/:id" element={<ClienteAtuntaquiForm />} />
         <Route path="/clienteBolivar/:id" element={<ClienteBolivarForm />} />

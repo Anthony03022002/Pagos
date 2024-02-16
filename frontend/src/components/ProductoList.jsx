@@ -80,14 +80,14 @@ export const ProductoList = () => {
         </thead>
         <tbody className="table-group-divider">
           {currentProductos.map((producto) => (
-            <tr key={producto.nombre_producto}>
+            <tr key={producto.id}>
               <td>{producto.nombre_producto}</td>
               <td>{producto.precio}</td>
               <td>
                 <button
                  className="btn" role="button" style={linkStyle}
                   onClick={() => {
-                    navigate(`/productos/${producto.nombre_producto}`);
+                    navigate(`/productos/${producto.id}`);
                   }}
                 >
                    <i className="bi bi-pencil" style={{ color: '#f9ae65' }}></i>

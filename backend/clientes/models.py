@@ -17,7 +17,7 @@ class Clientes(models.Model):
     
 
     # ForeignKey
-    nombre_producto = models.ForeignKey(Productos, null=True, blank=True, on_delete=models.SET_NULL)
+    nombre_producto = models.ForeignKey(Productos, blank=True,null=True, on_delete=models.SET_NULL)
     meses_diferidos = models.ForeignKey(Planes, null=True, blank=True, on_delete=models.SET_NULL)
 
 
