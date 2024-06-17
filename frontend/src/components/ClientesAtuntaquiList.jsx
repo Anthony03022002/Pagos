@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllClientes } from "../api/clientesAtuntaqui.api";
 import { getAllProductos } from "../api/productos.api";
 import { Link, useNavigate } from "react-router-dom";
+import { Pagination } from "./Paginacion";
 
 export const ClientesAtuntaquiList = () => {
   const [clientes, setClientes] = useState([]);
@@ -44,7 +45,9 @@ export const ClientesAtuntaquiList = () => {
     )
     .slice(indexOfFirstElement, indexOfLastElement);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const handlePageClick = (pageNumber) => setCurrentPage(pageNumber);
+
+    const totalPages = Math.ceil(clientes.length / elementsPerPage);
 
   const linkStyles = {
     backgroundColor: '#f9ae65',
@@ -106,7 +109,7 @@ export const ClientesAtuntaquiList = () => {
         </thead>
         <tbody>
           {currentClientes.map((cliente) => (
-            <tr key={cliente.cedula} className={determinarClasesFila(cliente)}>
+            <tr key={cliente.id} className={determinarClasesFila(cliente)}>
               <td>{cliente.cedula}</td>
               <td>{cliente.nombre_completo}</td>
               <td>{cliente.meses_diferidos}</td>
@@ -131,17 +134,11 @@ export const ClientesAtuntaquiList = () => {
           ))}
         </tbody>
       </table>
-      <nav>
-        <ul className="pagination">
-          {Array.from({ length: Math.ceil(clientes.length / elementsPerPage) }, (_, i) => (
-            <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-              <button className="page-link" onClick={() => paginate(i + 1)}>
-                {i + 1}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageClick={handlePageClick}
+      />
     </div>
   );
 };

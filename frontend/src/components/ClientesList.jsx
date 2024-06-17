@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { getAllClientes } from "../api/clientes.api";
 import { getAllProductos } from "../api/productos.api";
 import { Link, useNavigate } from "react-router-dom";
-
-export const ClientesList = ({}) => {
+import { Pagination } from "./Paginacion";
+export const ClientesList = () => {
   const [clientes, setClientes] = useState([]);
   const [filtroNombre, setFiltroNombre] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [elementsPerPage] = useState(10);
+  const elementsPerPage = 10;
   const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
-
 
   useEffect(() => {
     const cargarClientes = async () => {
@@ -23,6 +22,7 @@ export const ClientesList = ({}) => {
     };
     cargarClientes();
   }, []);
+
   useEffect(() => {
     async function loadProductos() {
       try {
@@ -44,15 +44,18 @@ export const ClientesList = ({}) => {
     )
     .slice(indexOfFirstElement, indexOfLastElement);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handlePageClick = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(clientes.length / elementsPerPage);
 
   const linkStyles = {
     backgroundColor: "#f9ae65",
-  }; // Cambia el color de fondo del botón
+  };
 
   const linkStyle = {
     backgroundColor: "#3c6d79",
-  }; // Cambia el color de fondo del botón
+  };
+
   const determinarClasesFila = (cliente) => {
     const fechaVencimiento = new Date(cliente.vencimiento);
     const fechaActual = new Date();
@@ -65,7 +68,7 @@ export const ClientesList = ({}) => {
         <h3
           style={{ color: "#3c6d79", textAlign: "center", paddingTop: "50px" }}
         >
-          Clientes Ibarra 1 Clientes Ibarra 2
+          Clientes Ibarra
         </h3>
         <div className="row">
           <div className="col text-end">
@@ -147,23 +150,11 @@ export const ClientesList = ({}) => {
           ))}
         </tbody>
       </table>
-      <nav>
-        <ul className="pagination">
-          {Array.from(
-            { length: Math.ceil(clientes.length / elementsPerPage) },
-            (_, i) => (
-              <li
-                key={i + 1}
-                className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
-              >
-                <button className="page-link" onClick={() => paginate(i + 1)}>
-                  {i + 1}
-                </button>
-              </li>
-            )
-          )}
-        </ul>
-      </nav>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageClick={handlePageClick}
+      />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllClientes } from "../api/clientesOtavalo.api";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllProductos } from "../api/productos.api";
-
+import { Pagination } from "./Paginacion";
 
 export const ClientesOtavaloList = () => {
   const [clientes, setClientes] = useState([]);
@@ -11,7 +11,6 @@ export const ClientesOtavaloList = () => {
   const [elementsPerPage] = useState(10);
   const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
-
 
   useEffect(() => {
     const cargarClientes = async () => {
@@ -40,31 +39,37 @@ export const ClientesOtavaloList = () => {
   const indexOfLastElement = currentPage * elementsPerPage;
   const indexOfFirstElement = indexOfLastElement - elementsPerPage;
   const currentClientes = clientes
-    .filter(cliente =>
+    .filter((cliente) =>
       cliente.nombre_completo.toLowerCase().includes(filtroNombre.toLowerCase())
     )
     .slice(indexOfFirstElement, indexOfLastElement);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handlePageClick = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(clientes.length / elementsPerPage);
 
   const linkStyles = {
-    backgroundColor: '#f9ae65',
-  } // Cambia el color de fondo del botón
+    backgroundColor: "#f9ae65",
+  }; // Cambia el color de fondo del botón
 
   const linkStyle = {
-    backgroundColor: '#3c6d79',
-  } // Cambia el color de fondo del botón
+    backgroundColor: "#3c6d79",
+  }; // Cambia el color de fondo del botón
   const determinarClasesFila = (cliente) => {
     const fechaVencimiento = new Date(cliente.vencimiento);
     const fechaActual = new Date();
-    return fechaVencimiento < fechaActual ? 'table-danger' : "";
+    return fechaVencimiento < fechaActual ? "table-danger" : "";
   };
 
   return (
     <div className="container">
-      <div className="mb-3" >
-      <h3 style={{ color: '#3c6d79', textAlign: 'center', paddingTop: '50px' }}>Clientes Otavalo</h3>
-      <div className="row">
+      <div className="mb-3">
+        <h3
+          style={{ color: "#3c6d79", textAlign: "center", paddingTop: "50px" }}
+        >
+          Clientes Otavalo
+        </h3>
+        <div className="row">
           <div className="col text-end">
             <Link
               to="/crear-clienteOtavalo"
@@ -75,7 +80,9 @@ export const ClientesOtavaloList = () => {
             </Link>
           </div>
         </div>
-        <label htmlFor="filtroNombre" className="form-label"><h4 style={{ color: '#3c6d79' }}>Buscar Cliente:</h4></label>
+        <label htmlFor="filtroNombre" className="form-label">
+          <h4 style={{ color: "#3c6d79" }}>Buscar Cliente:</h4>
+        </label>
         <input
           type="text"
           className="form-control"
@@ -84,14 +91,17 @@ export const ClientesOtavaloList = () => {
           onChange={(e) => setFiltroNombre(e.target.value)}
         />
       </div>
-      <table className="table table-hover" style={{
-        borderCollapse: 'separate',
-        borderSpacing: '1px',
-        border: '1px solid white',
-        borderRadius: '15px',
-        MozBorderRadius: '20px',
-        padding: '2px',
-      }}>
+      <table
+        className="table table-hover"
+        style={{
+          borderCollapse: "separate",
+          borderSpacing: "1px",
+          border: "1px solid white",
+          borderRadius: "15px",
+          MozBorderRadius: "20px",
+          padding: "2px",
+        }}
+      >
         <thead>
           <tr>
             <th scope="col">Cedula</th>
@@ -107,42 +117,48 @@ export const ClientesOtavaloList = () => {
         </thead>
         <tbody>
           {currentClientes.map((cliente) => (
-            <tr key={cliente.cedula} className={determinarClasesFila(cliente)}>
+            <tr key={cliente.id} className={determinarClasesFila(cliente)}>
               <td>{cliente.cedula}</td>
               <td>{cliente.nombre_completo}</td>
               <td>{cliente.meses_diferidos}</td>
-              <td>{productos.find(producto => producto.id === cliente.nombre_producto)?.nombre_producto || ''}</td>
+              <td>
+                {productos.find(
+                  (producto) => producto.id === cliente.nombre_producto
+                )?.nombre_producto || ""}
+              </td>
               <td>{cliente.cantidad_producto}</td>
               <td>{cliente.total_pagar}</td>
               <td>{cliente.pagos_mensuales}</td>
               <td>{cliente.vencimiento}</td>
               <td>
                 <button className="btn" role="button" style={linkStyles}>
-                  <Link to={`/clientesOtavalo/${cliente.id}/PagosMensualesOtavalo`}>
-                    <i className="bi bi-file-earmark-person-fill" style={{ color: '#3c6d79' }}></i>
+                  <Link
+                    to={`/clientesOtavalo/${cliente.id}/PagosMensualesOtavalo`}
+                  >
+                    <i
+                      className="bi bi-file-earmark-person-fill"
+                      style={{ color: "#3c6d79" }}
+                    ></i>
                   </Link>
                 </button>
                 <button
-                  className="btn" role="button" style={linkStyle}
-                  onClick={() => navigate(`/clienteOtavalo/${cliente.id}`)} >
-                  <i className="bi bi-pencil" style={{ color: '#f9ae65' }}></i>
+                  className="btn"
+                  role="button"
+                  style={linkStyle}
+                  onClick={() => navigate(`/clienteOtavalo/${cliente.id}`)}
+                >
+                  <i className="bi bi-pencil" style={{ color: "#f9ae65" }}></i>
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <nav>
-        <ul className="pagination">
-          {Array.from({ length: Math.ceil(clientes.length / elementsPerPage) }, (_, i) => (
-            <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-              <button className="page-link" onClick={() => paginate(i + 1)}>
-                {i + 1}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageClick={handlePageClick}
+      />
     </div>
   );
 };

@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'proyecto_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pagosdb',
+        'NAME': 'pagosdb2',
         'USER': 'postgres',
         'PASSWORD': 'anthony',
         'HOST': 'localhost',
