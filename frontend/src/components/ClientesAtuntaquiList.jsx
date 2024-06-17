@@ -102,7 +102,7 @@ export const ClientesAtuntaquiList = () => {
             <th scope="col">Producto</th>
             <th scope="col">Cantidad del Producto</th>
             <th scope="col">Total a Pagar</th>
-            <th scope="col">Pagos Mensuales</th>
+            <th scope="col">Estado</th>
             <th scope="col">Fecha próximo pago</th>
             <th scope="col">Acciones</th>
           </tr>
@@ -116,7 +116,7 @@ export const ClientesAtuntaquiList = () => {
               <td>{productos.find(producto => producto.id === cliente.nombre_producto)?.nombre_producto || ''}</td>
               <td>{cliente.cantidad_producto}</td>
               <td>{cliente.total_pagar}</td>
-              <td>{cliente.pagos_mensuales}</td>
+              <td>{cliente.estado}</td>
               <td>{cliente.vencimiento}</td>
               <td>
                 <button className="btn" role="button" style={linkStyles}>

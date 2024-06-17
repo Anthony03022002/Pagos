@@ -66,7 +66,7 @@ export const ClientesLagoagrioList = () => {
   return (
     <div className="container">
       <div className="mb-3" >
-      <h3 style={{ color: '#3c6d79', textAlign: 'center', paddingTop: '50px' }}>Clientes Lago</h3>
+      <h3 style={{ color: '#3c6d79', textAlign: 'center', paddingTop: '50px' }}>Clientes Lagoagrio</h3>
       <div className="row">
           <div className="col text-end">
             <Link
@@ -103,7 +103,7 @@ export const ClientesLagoagrioList = () => {
             <th scope="col">Producto</th>
             <th scope="col">Cantidad del Producto</th>
             <th scope="col">Total a Pagar</th>
-            <th scope="col">Pagos Mensuales</th>
+            <th scope="col">Estado</th>
             <th scope="col">Fecha próximo pago</th>
             <th scope="col">Acciones</th>
           </tr>
@@ -117,7 +117,7 @@ export const ClientesLagoagrioList = () => {
               <td>{productos.find(producto => producto.id === cliente.nombre_producto)?.nombre_producto || ''}</td>
               <td>{cliente.cantidad_producto}</td>
               <td>{cliente.total_pagar}</td>
-              <td>{cliente.pagos_mensuales}</td>
+              <td>{cliente.estado}</td>
               <td>{cliente.vencimiento}</td>
               <td>
                 <button className="btn" role="button" style={linkStyles}>

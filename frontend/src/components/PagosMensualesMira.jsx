@@ -12,7 +12,7 @@ export const PagosMensualesMira = () => {
   const [cliente, setCliente] = useState({});
   const [error, setError] = useState(null);
   const [pagos, setPagos] = useState([]);
-  const [totalPagado, setTotalPagado] = useState(0); 
+  const [totalPagado, setTotalPagado] = useState(0);
   const [debe, setDebe] = useState(0);
   const [productos, setProductos] = useState([]);
 
@@ -39,7 +39,7 @@ export const PagosMensualesMira = () => {
 
     loadProductos();
   }, []);
-  
+
   useEffect(() => {
     async function loadPagos() {
       const res = await getAllPagos();
@@ -48,7 +48,10 @@ export const PagosMensualesMira = () => {
       );
       setPagos(pagosCliente);
 
-      const sumaPagos = pagosCliente.reduce((total, pago) => total + parseInt(pago.cantidad_pagada), 0);
+      const sumaPagos = pagosCliente.reduce(
+        (total, pago) => total + parseInt(pago.cantidad_pagada),
+        0
+      );
       setTotalPagado(sumaPagos);
       const diferencia = parseInt(cliente.total_pagar) - sumaPagos;
       setDebe(diferencia);
@@ -80,34 +83,46 @@ export const PagosMensualesMira = () => {
     return <div className="alert alert-danger">Error: {error}</div>;
   }
   const linkStyle = {
-    backgroundColor: '#3c6d79',
-    color: '#fff'
-  } 
+    backgroundColor: "#3c6d79",
+    color: "#fff",
+  };
   return (
     <div className="container">
       <Link to="/clienteMira" className=" mt-1 btn btn-dark btn-lg">
-          <i className="bi bi-arrow-left"></i>
+        <i className="bi bi-arrow-left"></i>
       </Link>
       <h1 className="mt-1 text-center">Pagos Mensuales</h1>
       <h2 style={{ textTransform: "uppercase" }}>
         Cliente: {cliente.nombre_completo}
       </h2>
       <p style={{ textTransform: "uppercase" }}>
-      Producto: {productos.find(producto => producto.id === cliente.nombre_producto)?.nombre_producto || ''}
+        Producto:{" "}
+        {productos.find((producto) => producto.id === cliente.nombre_producto)
+          ?.nombre_producto || ""}
       </p>
       <p>Debe: ${debe}</p>
       <p>Pagado: ${totalPagado}</p>
       <p>Total a Pagar: ${cliente.total_pagar} </p>
-      <p>Meses diferidos: {cliente.meses_diferidos}</p>
+      <button
+        className="btn"
+        role="button"
+        style={linkStyle}
+        onClick={() => navigate(`/clienteMira/${cliente.id}`)}
+      >
+        Cambiar el estado del pago
+      </button>
 
-      <table className="table clase_table" style={{
-        borderCollapse: 'separate',
-        borderSpacing: '10px',
-        border: '1px solid white',
-        borderRadius: '15px',
-        MozBorderRadius: '20px',
-        padding: '2px',
-      }}>
+      <table
+        className="table clase_table"
+        style={{
+          borderCollapse: "separate",
+          borderSpacing: "10px",
+          border: "1px solid white",
+          borderRadius: "15px",
+          MozBorderRadius: "20px",
+          padding: "2px",
+        }}
+      >
         <thead>
           <tr>
             <th scope="col">Cedula</th>
@@ -126,25 +141,28 @@ export const PagosMensualesMira = () => {
               <td>{pago.fecha_pago}</td>
               <td>
                 <button
-                   className="btn" role="button" style={linkStyle}
+                  className="btn"
+                  role="button"
+                  style={linkStyle}
                   onClick={() => {
                     navigate(`/pagosMira/${pago.id}`);
                   }}
                 >
-                   <i className="bi bi-pencil" style={{ color: '#f9ae65' }}></i>
+                  <i className="bi bi-pencil" style={{ color: "#f9ae65" }}></i>
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
-        
       </table>
       <button
-             className="btn" role="button" style={linkStyle}
-          onClick={handleGenerarPagoClick}
-        >
-          Generar Pago 
-        </button>
+        className="btn"
+        role="button"
+        style={linkStyle}
+        onClick={handleGenerarPagoClick}
+      >
+        Generar Pago
+      </button>
     </div>
   );
 };

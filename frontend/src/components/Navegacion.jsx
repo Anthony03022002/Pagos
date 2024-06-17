@@ -151,11 +151,6 @@ export const Navegacion = () => {
           </Link>
               </li>
             </ul>
-            <form className="d-flex" role="search">
-                <button className="btn btn-outline-light" type="submit">
-                  <a className="nav-link active" aria-current="page" href="http://127.0.0.1:8000/">Cerrar Sesion</a>
-                </button>
-            </form>
           </div>
         </div>
       </nav>

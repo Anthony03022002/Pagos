@@ -308,7 +308,7 @@ export const ClienteLagoForm = () => {
             {...register("estado", { required: true })}
           >
             <option value="">Selecciona el Estado del Pago</option>
-            <option value="pagado">Por pagar</option>
+            <option value="pendiente">Pendiente</option>
             <option value="cancelado">Cancelado</option>
           </select>
           {errors.estado && <span>Este campo es requerido</span>}
